@@ -1,0 +1,54 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 1. ดึงโค้ดจาก Repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. ติดตั้ง Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.35.4"
+          channel: stable
+          cache: true
+
+      # 3. ตรวจสอบ Flutter
+      - name: Flutter Doctor
+        run: flutter doctor -v
+
+      # 4. ติดตั้ง Dependencies
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      # 5. วิเคราะห์โค้ด
+      - name: Flutter Analyze
+        run: flutter analyze
+
+      # 6. Build APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # 7. เปลี่ยนชื่อ APK
+      - name: Rename APK
+        run: |
+          mkdir -p output
+          cp build/app/outputs/flutter-apk/app-release.apk output/ESP32_Motor_Control.apk
+
+      # 8. อัปโหลด APK
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ESP32-Motor-Control-APK
+          path: output/ESP32_Motor_Control.apk
