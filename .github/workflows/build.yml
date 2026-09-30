@@ -12,16 +12,9 @@ jobs:
 
     steps:
 
-      # ==========================================
-      # 1. Checkout
-      # ==========================================
       - name: Checkout
         uses: actions/checkout@v4
 
-
-      # ==========================================
-      # 2. Setup Flutter
-      # ==========================================
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -29,71 +22,36 @@ jobs:
           channel: stable
           cache: true
 
-
-      # ==========================================
-      # 3. สำรอง AndroidManifest ของเรา
-      # ==========================================
       - name: Backup AndroidManifest
         run: |
           cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml
 
-
-      # ==========================================
-      # 4. สร้างโครงสร้าง Android ของ Flutter
-      # ==========================================
       - name: Generate Android Project
         run: |
           flutter create --platforms=android .
+          rm -rf test
 
-
-      # ==========================================
-      # 5. ใส่ AndroidManifest ของเรากลับ
-      # ==========================================
       - name: Restore AndroidManifest
         run: |
           cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
 
-
-      # ==========================================
-      # 6. Flutter Doctor
-      # ==========================================
       - name: Flutter Doctor
         run: flutter doctor -v
 
-
-      # ==========================================
-      # 7. Flutter Pub Get
-      # ==========================================
       - name: Flutter Pub Get
         run: flutter pub get
 
-
-      # ==========================================
-      # 8. Analyze
-      # ==========================================
       - name: Flutter Analyze
         run: flutter analyze
 
-
-      # ==========================================
-      # 9. Build APK
-      # ==========================================
       - name: Build APK
         run: flutter build apk --release
 
-
-      # ==========================================
-      # 10. เปลี่ยนชื่อ APK
-      # ==========================================
       - name: Rename APK
         run: |
           mkdir -p output
           cp build/app/outputs/flutter-apk/app-release.apk output/ESP32_Motor_Control.apk
 
-
-      # ==========================================
-      # 11. Upload APK
-      # ==========================================
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
