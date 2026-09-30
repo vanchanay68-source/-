@@ -1,11 +1,6 @@
-```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- ========================================= -->
-    <!-- Bluetooth BLE -->
-    <!-- ========================================= -->
-
-    <!-- Android 12+ -->
+    <!-- Bluetooth BLE สำหรับ Android 12+ -->
     <uses-permission
         android:name="android.permission.BLUETOOTH_SCAN"
         android:usesPermissionFlags="neverForLocation" />
@@ -13,7 +8,7 @@
     <uses-permission
         android:name="android.permission.BLUETOOTH_CONNECT" />
 
-    <!-- Android 11 และต่ำกว่า -->
+    <!-- Bluetooth สำหรับ Android รุ่นเก่า -->
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="30" />
@@ -22,7 +17,6 @@
         android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
 
-    <!-- Permission สำหรับการสแกน BLE บน Android รุ่นเก่า -->
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         android:maxSdkVersion="30" />
@@ -31,40 +25,29 @@
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:maxSdkVersion="28" />
 
-
-    <!-- อุปกรณ์รองรับ Bluetooth Low Energy -->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
 
-
-    <!-- ========================================= -->
-    <!-- Application -->
-    <!-- ========================================= -->
-
     <application
         android:label="ESP32 Motor Control"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+        android:icon="@mipmap/ic_launcher">
 
-        <!-- Main Activity -->
+        <!-- Flutter Android V2 Embedding -->
         <activity
-            android:name=".MainActivity"
+            android:name="io.flutter.embedding.android.FlutterActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
 
-            <!-- Flutter Theme -->
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
 
-            <!-- เปิดแอป -->
             <intent-filter>
 
                 <action
@@ -77,48 +60,11 @@
 
         </activity>
 
-
-        <!-- Flutter Embedding -->
+        <!-- Flutter V2 -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
     </application>
 
-
-    <!-- รองรับการค้นหาข้อความ -->
-    <queries>
-
-        <intent>
-
-            <action
-                android:name="android.intent.action.PROCESS_TEXT" />
-
-            <data
-                android:mimeType="text/plain" />
-
-        </intent>
-
-    </queries>
-
 </manifest>
-```
-
-### ไฟล์ 3 ตัวของแอปตอนนี้
-
-```text
-esp32_motor_control/
-│
-├── pubspec.yaml
-│
-├── lib/
-│   └── main.dart
-│
-└── android/
-    └── app/
-        └── src/
-            └── main/
-                └── AndroidManifest.xml
-```
-
-**สำคัญ:** ถ้าสร้างโปรเจกต์ Flutter ใหม่ ไฟล์ `MainActivity.kt`, `build.gradle`, `settings.gradle` และไฟล์อื่น ๆ จะถูกสร้างมาให้อัตโนมัติ ไม่ต้องเขียนใหม่ทั้งหมดครับ.
