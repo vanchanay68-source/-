@@ -611,342 +611,398 @@ class _MotorHomePageState extends State<MotorHomePage> {
 
       body: SafeArea(
 
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
 
-          children: [
+            children: [
 
-            const SizedBox(height: 15),
+              const SizedBox(height: 15),
 
 
-            // ------------------------------------------
-            // STATUS
-            // ------------------------------------------
+              // ------------------------------------------
+              // STATUS
+              // ------------------------------------------
 
-            Container(
+              Container(
 
-              margin:
-                  const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
+                margin:
+                    const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
 
-              padding:
-                  const EdgeInsets.all(15),
+                padding:
+                    const EdgeInsets.all(15),
 
-              width: double.infinity,
+                width: double.infinity,
 
-              decoration: BoxDecoration(
+                decoration: BoxDecoration(
 
-                borderRadius:
-                    BorderRadius.circular(15),
+                  borderRadius:
+                      BorderRadius.circular(15),
 
-                color: isConnected
-                    ? Colors.green.shade100
-                    : Colors.grey.shade200,
+                  color: isConnected
+                      ? Colors.green.shade100
+                      : Colors.grey.shade200,
 
-              ),
+                ),
 
-              child: Column(
+                child: Column(
 
-                children: [
+                  children: [
 
-                  Icon(
+                    Icon(
 
-                    isConnected
-                        ? Icons.bluetooth_connected
-                        : Icons.bluetooth_disabled,
+                      isConnected
+                          ? Icons.bluetooth_connected
+                          : Icons.bluetooth_disabled,
 
-                    size: 40,
+                      size: 40,
 
-                    color: isConnected
-                        ? Colors.green
-                        : Colors.grey,
-
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  Text(
-
-                    statusText,
-
-                    textAlign:
-                        TextAlign.center,
-
-                    style: const TextStyle(
-
-                      fontSize: 17,
-
-                      fontWeight:
-                          FontWeight.bold,
+                      color: isConnected
+                          ? Colors.green
+                          : Colors.grey,
 
                     ),
 
-                  ),
+                    const SizedBox(height: 8),
 
-                ],
+                    Text(
+
+                      statusText,
+
+                      textAlign:
+                          TextAlign.center,
+
+                      style: const TextStyle(
+
+                        fontSize: 17,
+
+                        fontWeight:
+                            FontWeight.bold,
+
+                      ),
+
+                    ),
+
+                  ],
+                ),
               ),
-            ),
 
 
-            const SizedBox(height: 15),
+              const SizedBox(height: 15),
 
 
-            // ------------------------------------------
-            // CONNECT BUTTON
-            // ------------------------------------------
+              // ------------------------------------------
+              // CONNECT BUTTON
+              // ------------------------------------------
 
-            Padding(
+              Padding(
 
-              padding:
-                  const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
+                padding:
+                    const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
 
-              child: Row(
+                child: Row(
 
-                children: [
+                  children: [
 
-                  Expanded(
+                    Expanded(
 
-                    child: ElevatedButton.icon(
+                      child: ElevatedButton.icon(
 
-                      onPressed:
+                        onPressed:
+                            isScanning
+                                ? null
+                                : scanForESP32,
+
+                        icon: const Icon(
+                          Icons.search,
+                        ),
+
+                        label: Text(
+
                           isScanning
-                              ? null
-                              : scanForESP32,
+                              ? "กำลังค้นหา..."
+                              : "ค้นหา ESP32",
 
-                      icon: const Icon(
-                        Icons.search,
-                      ),
-
-                      label: Text(
-
-                        isScanning
-                            ? "กำลังค้นหา..."
-                            : "ค้นหา ESP32",
+                        ),
 
                       ),
-
                     ),
-                  ),
 
 
-                  const SizedBox(width: 10),
+                    const SizedBox(width: 10),
 
 
-                  Expanded(
+                    Expanded(
 
-                    child: ElevatedButton.icon(
+                      child: ElevatedButton.icon(
 
-                      onPressed:
-                          isConnected
-                              ? disconnectESP32
-                              : null,
+                        onPressed:
+                            isConnected
+                                ? disconnectESP32
+                                : null,
 
-                      icon: const Icon(
-                        Icons.bluetooth_disabled,
+                        icon: const Icon(
+                          Icons.bluetooth_disabled,
+                        ),
+
+                        label: const Text(
+                          "ตัดการเชื่อมต่อ",
+                        ),
+
                       ),
-
-                      label: const Text(
-                        "ตัดการเชื่อมต่อ",
-                      ),
-
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
-            ),
 
 
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
 
 
-            // ------------------------------------------
-            // DEVICE LIST
-            // ------------------------------------------
+              // ------------------------------------------
+              // DEVICE LIST
+              // ------------------------------------------
 
-            if (scanResults.isNotEmpty)
+              if (scanResults.isNotEmpty)
 
-              SizedBox(
+                SizedBox(
 
-                height: 100,
+                  height: 100,
 
-                child: ListView.builder(
+                  child: ListView.builder(
 
-                  itemCount:
-                      scanResults.length,
+                    itemCount:
+                        scanResults.length,
 
-                  itemBuilder:
-                      (context, index) {
+                    itemBuilder:
+                        (context, index) {
 
-                    final result =
-                        scanResults[index];
+                      final result =
+                          scanResults[index];
 
-                    final device =
-                        result.device;
+                      final device =
+                          result.device;
 
-                    final name =
-                        device.platformName;
+                      final name =
+                          device.platformName;
 
-                    if (name.isEmpty) {
+                      if (name.isEmpty) {
 
-                      return const SizedBox();
+                        return const SizedBox();
 
-                    }
+                      }
 
 
-                    return ListTile(
+                      return ListTile(
 
-                      leading:
-                          const Icon(
-                            Icons.bluetooth,
-                          ),
-
-                      title: Text(name),
-
-                      subtitle: Text(
-                        device.remoteId.str,
-                      ),
-
-                      trailing:
-                          ElevatedButton(
-
-                        onPressed: () {
-
-                          connectToESP32(
-                            device,
-                          );
-
-                        },
-
-                        child:
-                            const Text(
-                              "เชื่อมต่อ",
+                        leading:
+                            const Icon(
+                              Icons.bluetooth,
                             ),
 
-                      ),
-                    );
-                  },
+                        title: Text(name),
+
+                        subtitle: Text(
+                          device.remoteId.str,
+                        ),
+
+                        trailing:
+                            ElevatedButton(
+
+                          onPressed: () {
+
+                            connectToESP32(
+                              device,
+                            );
+
+                          },
+
+                          child:
+                              const Text(
+                                "เชื่อมต่อ",
+                              ),
+
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+
+              const SizedBox(height: 15),
+
+
+              // ------------------------------------------
+              // MOTOR CONTROL (รถขับเคลื่อน)
+              // ------------------------------------------
+
+              const Text(
+
+                "ควบคุมมอเตอร์ขับเคลื่อน",
+
+                style: TextStyle(
+
+                  fontSize: 20,
+
+                  fontWeight:
+                      FontWeight.bold,
+
                 ),
               ),
 
 
-            const Spacer(),
+              const SizedBox(height: 15),
 
 
-            // ------------------------------------------
-            // MOTOR CONTROL
-            // ------------------------------------------
+              // เดินหน้า
 
-            const Text(
+              motorButton(
 
-              "ควบคุมมอเตอร์",
+                icon:
+                    Icons.keyboard_arrow_up,
 
-              style: TextStyle(
+                text:
+                    "เดินหน้า",
 
-                fontSize: 22,
-
-                fontWeight:
-                    FontWeight.bold,
+                command:
+                    "F",
 
               ),
-            ),
 
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 15),
 
 
-            // เดินหน้า
+              // ซ้าย - หยุด - ขวา
 
-            motorButton(
+              Row(
 
-              icon:
-                  Icons.keyboard_arrow_up,
+                mainAxisAlignment:
+                    MainAxisAlignment.center,
 
-              text:
-                  "เดินหน้า",
+                children: [
 
-              command:
-                  "F",
+                  motorButton(
 
-            ),
+                    icon:
+                        Icons.keyboard_arrow_left,
+
+                    text:
+                        "ซ้าย",
+
+                    command:
+                        "L",
+
+                  ),
 
 
-            const SizedBox(height: 15),
+                  const SizedBox(width: 15),
 
 
-            // ซ้าย - หยุด - ขวา
+                  stopButton(),
 
-            Row(
 
-              mainAxisAlignment:
-                  MainAxisAlignment.center,
+                  const SizedBox(width: 15),
 
-              children: [
 
-                motorButton(
+                  motorButton(
 
-                  icon:
-                      Icons.keyboard_arrow_left,
+                    icon:
+                        Icons.keyboard_arrow_right,
 
-                  text:
-                      "ซ้าย",
+                    text:
+                        "ขวา",
 
-                  command:
-                      "L",
+                    command:
+                        "R",
+
+                  ),
+
+                ],
+              ),
+
+
+              const SizedBox(height: 15),
+
+
+              // ถอยหลัง
+
+              motorButton(
+
+                icon:
+                    Icons.keyboard_arrow_down,
+
+                text:
+                    "ถอยหลัง",
+
+                command:
+                    "B",
+
+              ),
+
+
+              const SizedBox(height: 25),
+
+
+              // ------------------------------------------
+              // BELT MOTOR CONTROL (เพิ่มส่วนควบคุมมอเตอร์สายพาน)
+              // ------------------------------------------
+
+              const Text(
+
+                "ควบคุมมอเตอร์สายพาน",
+
+                style: TextStyle(
+
+                  fontSize: 20,
+
+                  fontWeight:
+                      FontWeight.bold,
 
                 ),
+              ),
+
+              const SizedBox(height: 15),
+
+              Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      sendCommand("V"); // ส่งคำสั่ง V เปิดสายพาน
+                    },
+                    icon: const Icon(Icons.play_arrow),
+                    label: const Text("เปิดสายพาน"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      sendCommand("X"); // ส่งคำสั่ง X ปิดสายพาน
+                    },
+                    icon: const Icon(Icons.stop),
+                    label: const Text("ปิดสายพาน"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
 
 
-                const SizedBox(width: 15),
+              const SizedBox(height: 30),
 
-
-                stopButton(),
-
-
-                const SizedBox(width: 15),
-
-
-                motorButton(
-
-                  icon:
-                      Icons.keyboard_arrow_right,
-
-                  text:
-                      "ขวา",
-
-                  command:
-                      "R",
-
-                ),
-
-              ],
-            ),
-
-
-            const SizedBox(height: 15),
-
-
-            // ถอยหลัง
-
-            motorButton(
-
-              icon:
-                  Icons.keyboard_arrow_down,
-
-              text:
-                  "ถอยหลัง",
-
-              command:
-                  "B",
-
-            ),
-
-
-            const SizedBox(height: 30),
-
-          ],
+            ],
+          ),
         ),
       ),
     );
