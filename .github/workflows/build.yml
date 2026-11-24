@@ -12,9 +12,18 @@ jobs:
 
     steps:
 
+      # 1. Checkout Repository
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2. Setup Java 17
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # 3. Setup Flutter 3.35.4
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -22,38 +31,55 @@ jobs:
           channel: stable
           cache: true
 
+      # 4. ตรวจสอบ Java และ Flutter
+      - name: Check Java and Flutter
+        run: |
+          java -version
+          flutter --version
+
+      # 5. Backup AndroidManifest
       - name: Backup AndroidManifest
         run: |
           cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml
 
+      # 6. Generate Android Project
       - name: Generate Android Project
         run: |
           flutter create --platforms=android .
           rm -rf test
 
+      # 7. Restore AndroidManifest
       - name: Restore AndroidManifest
         run: |
           cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
 
+      # 8. Flutter Doctor
       - name: Flutter Doctor
         run: flutter doctor -v
 
+      # 9. Flutter Pub Get
       - name: Flutter Pub Get
         run: flutter pub get
 
+      # 10. Flutter Analyze
       - name: Flutter Analyze
         run: flutter analyze
 
+      # 11. Build APK
       - name: Build APK
         run: flutter build apk --release
 
+      # 12. Rename APK
       - name: Rename APK
         run: |
           mkdir -p output
           cp build/app/outputs/flutter-apk/app-release.apk output/ESP32_Motor_Control.apk
 
+      # 13. Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ESP32-Motor-Control-APK
           path: output/ESP32_Motor_Control.apk
+          if-no-files-found: error
+          retention-days: 30
