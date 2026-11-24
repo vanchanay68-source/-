@@ -1,7 +1,6 @@
-
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:ui' show GradientRotation;
+import 'package:flutter/painting.dart' show GradientRotation;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -451,7 +450,7 @@ class _MotorHomePageState extends State<MotorHomePage>
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.purple.withOpacity(0.20),
+                color: Colors.purple.withValues(alpha: 0.20),
                 blurRadius: 12,
                 spreadRadius: 1,
               ),
@@ -523,7 +522,7 @@ class _MotorHomePageState extends State<MotorHomePage>
           backgroundColor: const Color(0xFF19192A),
           foregroundColor: color,
           elevation: 8,
-          shadowColor: color.withOpacity(0.5),
+          shadowColor: color.withValues(alpha: 0.5),
           shape: CircleBorder(
             side: BorderSide(
               color: color,
@@ -611,12 +610,12 @@ class _MotorHomePageState extends State<MotorHomePage>
         color: const Color(0xFF171725),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: color.withOpacity(0.65),
+          color: color.withValues(alpha: 0.65),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.10),
+            color: color.withValues(alpha: 0.10),
             blurRadius: 10,
           ),
         ],
@@ -696,7 +695,7 @@ class _MotorHomePageState extends State<MotorHomePage>
               activeTrackColor: color,
               inactiveTrackColor: Colors.white12,
               thumbColor: color,
-              overlayColor: color.withOpacity(0.15),
+              overlayColor: color.withValues(alpha: 0.15),
               trackHeight: 5,
               thumbShape: const RoundSliderThumbShape(
                 enabledThumbRadius: 9,
@@ -802,7 +801,7 @@ class _MotorHomePageState extends State<MotorHomePage>
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.cyan.withOpacity(0.12),
+                    color: Colors.cyan.withValues(alpha: 0.12),
                     blurRadius: 15,
                   ),
                 ],
