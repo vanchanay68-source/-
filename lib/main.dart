@@ -1,12 +1,12 @@
+
 import 'dart:async';
 import 'dart:math' as math;
-import 'package:flutter/painting.dart' show GradientRotation;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 // ======================================================
-// ESP32 BLE UUID (เดิม)
+// ESP32 BLE UUID
 // ======================================================
 
 final Guid serviceUuid = Guid(
